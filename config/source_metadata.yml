@@ -1,0 +1,62 @@
+orders_json:
+    source_type: file_json
+    location: data/orders.json
+    owner_contact: order-data-owner@company.com
+    description: Customer transaction orders with nested shipping information
+    record_count: 250
+    schema_summary: order_id (str), customer_id (str), order_timestamp (str), status (str), item_count (int), subtotal (float), shipping_fee (float), total_amount (float), shipping (dict)
+    candidate_key: order_id
+    update_pattern: full_snapshot
+    acquisition_method: file_copy
+    known_quality_issues:
+      - Contains nested object field (shipping)
+    candidate_validation_checks:
+      - check_order_id_unique
+      - check_total_amount_positive
+
+products_parquet:
+    source_type: file_parquet
+    location: data/products.parquet
+    owner_contact: inventory-data-owner@company.com
+    description: Product inventory details with explicit strong data types
+    record_count: 200
+    schema_summary: product_id (str), product_name (str), category (str), brand (str), unit_price (float64), stock_quantity (int32), weight_kg (float64)
+    candidate_key: product_id
+    update_pattern: full_snapshot
+    acquisition_method: file_copy
+    known_quality_issues:
+      - None observed during initial profiling
+    candidate_validation_checks:
+      - check_product_id_unique
+      - check_unit_price_positive
+
+rest_api_events:
+    source_type: rest_api
+    location: http://127.0.0.1:8000/api/events
+    owner_contact: api-platform-team@company.com
+    description: Paginated event logs stream with update timestamps
+    record_count: unknown_dynamic
+    schema_summary: event_id (str), updated_at (str), amount (float), metadata (dict)
+    candidate_key: event_id
+    update_pattern: incremental_watermark
+    acquisition_method: paginated_http_get
+    known_quality_issues:
+      - Repeated event_ids with updated timestamps across pagination
+    candidate_validation_checks:
+      - check_event_id_not_null
+      - check_updated_at_valid_timestamp
+
+postgres_support_tickets:
+    source_type: postgres_db
+    location: postgresql://dss150p:***@dss150p-lab2-postgres:5432/dss150p
+    owner_contact: support-ops-team@company.com
+    description: Operational customer support tickets table
+    record_count: 250
+    schema_summary: ticket_id (int, PK), customer_id (str), category (str), priority (str), assigned_agent (str, nullable), opened_at (timestamp), resolved_at (timestamp, nullable), status (str)
+    candidate_key: ticket_id
+    update_pattern: bounded_query_extraction
+    acquisition_method: sql_query
+    known_quality_issues:
+      - Null values present in assigned_agent and resolved_at
+    candidate_validation_checks:
+      - check_ticket_id_primary_key

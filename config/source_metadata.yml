@@ -1,4 +1,25 @@
-orders_json:
+sources:
+  customers_csv:
+    source_type: file_csv
+    location: data/customers.csv
+    owner_contact: customer-data-owner@company.com
+    description: Customer demographic and location data
+    record_count: 250
+    schema_summary: customer_id (str), first_name (str), last_name (str), email (str), city (str), signup_date (str), customer_segment (str)
+    candidate_key: customer_id
+    update_pattern: full_snapshot
+    acquisition_method: file_copy
+    known_quality_issues:
+      - 3 missing email values
+      - 2 missing city values
+      - 2 exact duplicate rows
+      - 3 duplicate customer_id keys
+    candidate_validation_checks:
+      - check_customer_id_unique
+      - check_email_not_null
+      - check_signup_date_iso_format
+
+  orders_json:
     source_type: file_json
     location: data/orders.json
     owner_contact: order-data-owner@company.com
@@ -14,7 +35,7 @@ orders_json:
       - check_order_id_unique
       - check_total_amount_positive
 
-products_parquet:
+  products_parquet:
     source_type: file_parquet
     location: data/products.parquet
     owner_contact: inventory-data-owner@company.com
@@ -30,7 +51,7 @@ products_parquet:
       - check_product_id_unique
       - check_unit_price_positive
 
-rest_api_events:
+  rest_api_events:
     source_type: rest_api
     location: http://127.0.0.1:8000/api/events
     owner_contact: api-platform-team@company.com
@@ -46,7 +67,7 @@ rest_api_events:
       - check_event_id_not_null
       - check_updated_at_valid_timestamp
 
-postgres_support_tickets:
+  postgres_support_tickets:
     source_type: postgres_db
     location: postgresql://dss150p:***@dss150p-lab2-postgres:5432/dss150p
     owner_contact: support-ops-team@company.com

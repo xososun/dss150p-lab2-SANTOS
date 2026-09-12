@@ -1,18 +1,123 @@
 dataset: customers
-owner: "TODO"
+description: >
+  Customer profile records containing identity, contact, and segmentation
+  attributes for individuals who have signed up as customers. Sourced as a
+  flat CSV export (customers.csv). Used as the reference/dimension table for
+  joining to transactional data such as orders.
+
+owner: "Customer Data Team (data-eng@company.com)"
+producer: "CRM / Customer Signup System (CRM Platform Team)"
+consumer: "Analytics & Reporting Team (BI/Analytics, Marketing Ops)"
+
 source_type: csv
+
 primary_key: customer_id
+candidate_keys:
+  - email  # not currently enforced as unique/non-null; treat as candidate key only
+
 delivery:
-  cadence: "TODO"
+  cadence: "Daily batch export (nightly at 02:00 GMT+8)"
+  method: "File drop to shared/cloud storage location"
+  format_notes: "Flat CSV, UTF-8 encoded, header row included"
+
 fields:
   - name: customer_id
     type: string
+    logical_type: identifier
     nullable: false
     unique: true
+    description: "Unique identifier for a customer record."
+
+  - name: first_name
+    type: string
+    logical_type: text
+    nullable: false
+    unique: false
+    description: "Customer's first name."
+
+  - name: last_name
+    type: string
+    logical_type: text
+    nullable: false
+    unique: false
+    description: "Customer's last name."
+
   - name: email
     type: string
+    logical_type: email_address
     nullable: true
+    unique: false
+    description: >
+      Customer's email address. Nullable due to observed missing values
+      (3 records); not currently guaranteed unique in source data.
+
+  - name: city
+    type: string
+    logical_type: text
+    nullable: true
+    unique: false
+    description: >
+      Customer's city of residence. Nullable due to observed missing
+      values (2 records).
+
+  - name: signup_date
+    type: string
+    logical_type: date
+    nullable: false
+    unique: false
+    description: >
+      Date the customer signed up. Delivered as a text field in source CSV;
+      must be cast to a date type on ingestion (expected format TODO:
+      confirm with producer, e.g. YYYY-MM-DD).
+
+  - name: customer_segment
+    type: string
+    logical_type: category
+    nullable: false
+    unique: false
+    description: "Business-defined customer segment/tier label."
+
 quality_rules:
-  - "TODO: define at least 5 rules"
+  - "customer_id must be non-null for 100% of records."
+  - "customer_id must be unique; any duplicate customer_id values must be flagged and quarantined before downstream use (source has been observed to contain duplicates)."
+  - "No exact duplicate rows should be present after deduplication; incoming files must be checked for and stripped of exact duplicate rows (source has been observed to contain duplicates)."
+  - "email, when present, must match a valid email address format (e.g. RFC 5322-compatible pattern); malformed emails should be flagged, not silently dropped."
+  - "signup_date must be a parseable date and must not be in the future relative to the file's delivery date."
+  - "customer_segment must be one of a defined, controlled set of values (TODO: enumerate valid segment values with the producer); unrecognized values should be flagged."
+  - "Missing email and missing city should not exceed an agreed threshold (TODO: define threshold, e.g. no more than 2% of records) without triggering an alert to the data owner."
+
 change_policy:
-  schema_change_notice: "TODO"
+  schema_change_notice: >
+    TODO: Producer must notify the owning data team at least 5 business days
+    in advance of any schema change (added/removed/renamed fields, type
+    changes, or key changes). Breaking changes (e.g. removal of customer_id,
+    change of primary key, or type changes to existing fields) require
+    sign-off from the consumer team before deployment. Non-breaking additive
+    changes (e.g. new optional field) may be delivered with notice-only,
+    no sign-off required.
+  notification_channel: "#data-contracts Slack channel + email to data-eng@company.com"
+
+contact_and_escalation:
+  primary_contact: "Data Owner - Customer Data Team (data-owner@company.com)"
+  secondary_contact: "Producer System Team - CRM Platform (producer@company.org)"
+  escalation_path: >
+    TODO: If a quality rule fails or the file does not arrive within the
+    expected cadence window, notify the primary contact within 1 business
+    hour. If unresolved within 4 business hours, escalate to the
+    secondary contact and the on-call data engineer (placeholder:
+    on-call rotation link).
+
+ingestion_approach:
+  type: "Full snapshot load (with staged deduplication), not incremental"
+  justification: >
+    The source is a flat CSV export with no native change-data-capture
+    fields (e.g. no updated_at/modified_at timestamp, no delete markers,
+    and no reliable unique key as currently delivered, since customer_id
+    has been observed to contain duplicates). Without a reliable way to
+    identify only new or changed records, incremental extraction risks
+    silently missing updates or deletions. A full snapshot load, replacing
+    or fully reconciling the target table on each delivery, is the safer
+    approach until the producer can supply a unique key and a
+    last-modified timestamp to support incremental (delta) loading.
+    Once those are available, this dataset should be re-evaluated for an
+    incremental/CDC-based ingestion pattern to reduce processing cost.

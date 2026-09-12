@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="62d6934f-d9b8-4163-9814-374b395e060a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/config/source_metadata.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/data_contract_customers.yml" beforeDir="false" afterPath="$PROJECT_DIR$/config/data_contract_customers.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/source_metadata_template.yml" beforeDir="false" />
-    </list>
+    <list default="true" id="62d6934f-d9b8-4163-9814-374b395e060a" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,6 +45,11 @@
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Xyl\PycharmProjects\dss150p-lab2-starter\outputs" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>

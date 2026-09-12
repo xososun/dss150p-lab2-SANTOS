@@ -2,16 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="62d6934f-d9b8-4163-9814-374b395e060a" name="Changes" comment="Watermark explanation in Markdown file uploaded.">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/outputs/1.1 Environment and Sources.png" beforeDir="false" afterPath="$PROJECT_DIR$/1.1 Environment and Sources.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/outputs/1.5 API Pages.png" beforeDir="false" afterPath="$PROJECT_DIR$/1.5 API Pages.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/outputs/1.6 PostgreSQL Source Table.png" beforeDir="false" afterPath="$PROJECT_DIR$/1.6 PostgreSQL Source Table.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/outputs/config_ingestion_design.md" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_ingestion_design.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/outputs/config_watermark_semantics.md" beforeDir="false" afterPath="$PROJECT_DIR$/config/config_watermark_semantics.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/outputs/logical_schema.md" beforeDir="false" afterPath="$PROJECT_DIR$/logical_schema.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/outputs/profiling_report.md" beforeDir="false" afterPath="$PROJECT_DIR$/profiling_report.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/ingest_pipeline.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/ingest_pipeline.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/validate_raw.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/validate_raw.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

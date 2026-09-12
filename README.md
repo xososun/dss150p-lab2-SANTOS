@@ -12,3 +12,8 @@ Start with the Word laboratory guide. This repository is intentionally incomplet
 7. Terminal B: complete/run profiling and ingestion scripts.
 
 Do not commit `.env`, generated raw data, or watermark state unless specifically instructed.
+
+### AI Usage Disclosure
+In the interest of transparency, this section discloses how AI tools were used in the development of this project. AI was used as a support tool for coding and analysis tasks, not as a replacement for human judgment, review, or decision-making.
+The primary AI tools used in this project were Gemini and Claude, which assisted with code generation, debugging, code review, and analysis tasks.
+
